@@ -2,6 +2,10 @@
   "name": "dependencies.js",
   "version": "1.0.0",
   "description": "Dependencies.js is a JavaScript library that provides a simple and efficient way to manage dependencies in your projects. It allows you to define and resolve dependencies between modules, making it easier to organize and maintain your codebase.",
+  "repository": {
+    "url": "https://github.com/nulldef/dependencies.js",
+    "type": "git"
+  },
   "main": "index.js",
   "types": "index.d.ts",
   "exports": {
