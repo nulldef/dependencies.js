@@ -1,0 +1,6 @@
+.prettier*
+.github/
+jest.*
+*.test.*
+tsconfig.*
+index.ts
