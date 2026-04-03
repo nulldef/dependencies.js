@@ -1,5 +1,7 @@
 # dependencies.js
 
+[![CI](https://github.com/nulldef/dependencies.js/actions/workflows/ci.yml/badge.svg)](https://github.com/nulldef/dependencies.js/actions/workflows/ci.yml)
+
 A lightweight dependency injection container for TypeScript/JavaScript.
 
 ## Features
