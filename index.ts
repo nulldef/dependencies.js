@@ -2,31 +2,18 @@ import "reflect-metadata"
 
 type Constructor<T = any> = new (...args: any[]) => T
 
-const DEPS_KEY = Symbol("di:dependencies")
+const DEPS_KEY = Symbol.for("di:dependencies")
 
-const registry = new Map<Constructor, boolean>()
-const instances = new Map<Constructor, any>()
+export class Container {
+  private registry = new Set<Constructor>()
+  private instances = new Map<Constructor, any>()
 
-export const Injectable =
-  () =>
-  <T extends Constructor>(target: T): T => {
-    registry.set(target, true)
-    return target
-  }
-
-export const Inject = (...deps: Constructor[]): ClassDecorator => {
-  return target => {
-    Reflect.defineMetadata(DEPS_KEY, deps, target)
-  }
-}
-
-export const container = {
   get<T>(token: Constructor<T>, resolving = new Set<Constructor>()): T {
-    if (instances.has(token)) {
-      return instances.get(token) as T
+    if (this.instances.has(token)) {
+      return this.instances.get(token) as T
     }
 
-    if (!registry.has(token)) {
+    if (!this.registry.has(token)) {
       throw new Error(`"${token.name}" is not registered. Did you forget @Injectable?`)
     }
 
@@ -44,11 +31,32 @@ export const container = {
     resolving.delete(token)
 
     const instance = new token(...resolvedDeps)
-    instances.set(token, instance)
+    this.instances.set(token, instance)
     return instance
-  },
+  }
+
+  register(target: Constructor): void {
+    this.registry.add(target)
+  }
 
   reset(): void {
-    instances.clear()
-  },
+    this.instances.clear()
+    this.registry.clear()
+  }
+}
+
+export const container = new Container()
+
+export const Injectable =
+  () =>
+  <T extends Constructor>(target: T): T => {
+    container.register(target)
+    return target
+  }
+
+export const Inject = (...deps: Constructor[]) => {
+  return <T extends Constructor>(target: T): T => {
+    Reflect.defineMetadata(DEPS_KEY, deps, target)
+    return target
+  }
 }

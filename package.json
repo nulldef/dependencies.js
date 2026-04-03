@@ -3,15 +3,30 @@
   "version": "1.0.0",
   "description": "Dependencies.js is a JavaScript library that provides a simple and efficient way to manage dependencies in your projects. It allows you to define and resolve dependencies between modules, making it easier to organize and maintain your codebase.",
   "main": "index.js",
+  "types": "index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./index.js"
+    }
+  },
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "test": "jest",
+    "cleanup": "rm -rf *.js *.d.ts *.map"
   },
   "keywords": [],
   "author": "Aleksei Bespalov <nulldefiner@gmail.com>",
   "license": "MIT",
   "packageManager": "pnpm@10.33.0",
   "dependencies": {
-    "reflect-metadata": "^0.2.2",
+    "reflect-metadata": "^0.2.2"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/mocha": "^10.0.10",
+    "jest": "^30.3.0",
+    "ts-jest": "^29.4.9",
     "typescript": "^6.0.2"
   }
 }

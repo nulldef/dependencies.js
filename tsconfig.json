@@ -1,25 +1,4 @@
 {
-  // Visit https://aka.ms/tsconfig to read more about this file
-  "compilerOptions": {
-    "module": "preserve",
-    "moduleResolution": "bundler",
-    "target": "esnext",
-    "lib": ["esnext"],
-    "sourceMap": false,
-    "declaration": false,
-    "declarationMap": false,
-    "noUncheckedIndexedAccess": true,
-    "exactOptionalPropertyTypes": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    "strict": true,
-    "verbatimModuleSyntax": true,
-    "isolatedModules": true,
-    "noUncheckedSideEffectImports": true,
-    "moduleDetection": "force",
-    "skipLibCheck": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
-  }
+  "extends": "./tsconfig.base.json",
+  "exclude": ["**/*.test.ts", "jest.config.ts"]
 }
