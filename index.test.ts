@@ -1,5 +1,6 @@
 import "reflect-metadata"
-import { Container, container, Injectable, Inject } from "./index"
+
+import { Container, Inject, Injectable, container } from "./index"
 
 const DEPS_KEY = Symbol.for("di:dependencies")
 
@@ -30,7 +31,9 @@ describe("Container", () => {
 
   it("resolves dependencies via @Inject metadata", () => {
     class Logger {
-      log(msg: string) { return msg }
+      log(msg: string) {
+        return msg
+      }
     }
 
     class Service {

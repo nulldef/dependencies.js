@@ -18,7 +18,7 @@ npm install dependencies.js
 ## Quick Start
 
 ```typescript
-import { Injectable, Inject, container } from "dependencies.js"
+import { Inject, Injectable, container } from "dependencies.js"
 
 @Injectable()
 class Logger {
@@ -60,7 +60,10 @@ Declares constructor dependencies for a class.
 @Injectable()
 @Inject(Database, Logger)
 class UserRepo {
-  constructor(public db: Database, public logger: Logger) {}
+  constructor(
+    public db: Database,
+    public logger: Logger,
+  ) {}
 }
 ```
 
@@ -87,11 +90,11 @@ c.reset() // clears all registrations and cached instances
 
 #### Methods
 
-| Method | Description |
-|---|---|
-| `get<T>(token)` | Resolves and returns a singleton instance of the given class |
-| `register(target)` | Registers a class in the container |
-| `reset()` | Clears all instances and registrations |
+| Method             | Description                                                  |
+| ------------------ | ------------------------------------------------------------ |
+| `get<T>(token)`    | Resolves and returns a singleton instance of the given class |
+| `register(target)` | Registers a class in the container                           |
+| `reset()`          | Clears all instances and registrations                       |
 
 ## Requirements
 
