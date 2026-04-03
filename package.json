@@ -19,7 +19,8 @@
     "test": "jest",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "cleanup": "rm -rf *.js *.d.ts *.map"
+    "cleanup": "rm -rf *.js *.d.ts *.map",
+    "prepublish": "npm run cleanup && npm run build"
   },
   "keywords": [],
   "author": "Aleksei Bespalov <nulldefiner@gmail.com>",
