@@ -1,6 +1,7 @@
 # dependencies.js
 
 [![CI](https://github.com/nulldef/dependencies.js/actions/workflows/ci.yml/badge.svg)](https://github.com/nulldef/dependencies.js/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/nulldef/dependencies.js/graph/badge.svg)](https://codecov.io/gh/nulldef/dependencies.js)
 
 A lightweight dependency injection container for TypeScript/JavaScript.
 
@@ -10,6 +11,10 @@ A lightweight dependency injection container for TypeScript/JavaScript.
 - Automatic dependency resolution with singleton caching
 - Circular dependency detection with clear error messages
 - Zero configuration — just decorate and resolve
+
+## Coverage
+
+Each CI run writes a coverage table to the workflow **Summary** (GitHub Actions → run → Summary). To enable the [Codecov](https://codecov.io/gh/nulldef/dependencies.js) dashboard and README badge, add the repository on [codecov.io](https://codecov.io) and store its upload token as the `CODECOV_TOKEN` repository secret.
 
 ## Installation
 

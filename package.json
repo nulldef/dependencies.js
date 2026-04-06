@@ -17,6 +17,7 @@
   "scripts": {
     "build": "tsc",
     "test": "jest",
+    "test:coverage": "jest --coverage",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "cleanup": "rm -rf *.js *.d.ts *.map",
