@@ -4,3 +4,4 @@ jest.*
 *.test.*
 tsconfig.*
 index.ts
+coverage
