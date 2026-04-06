@@ -34,12 +34,25 @@ export class Container {
     return instance
   }
 
-  register(target: Constructor, as: string): void {
+  register(as: string, target: Constructor): void {
     if (this.registry.has(as)) {
       throw new Error(`Token "${as}" is already registered`)
     }
 
     this.registry.set(as, target)
+  }
+
+  replace(as: string, target: Constructor): void {
+    if (!this.registry.has(as)) {
+      throw new Error(`Token "${as}" is not registered`)
+    }
+
+    this.registry.set(as, target)
+  }
+
+  setInstance<T>(token: Token<T>, instance: T): void {
+    const constructor = this.getConstructor(token)
+    this.instances.set(constructor, instance)
   }
 
   reset(): void {
@@ -63,7 +76,7 @@ export const container = new Container()
 export const Injectable =
   (as?: string) =>
   <T extends Constructor>(target: T): T => {
-    container.register(target, as ?? target.name)
+    container.register(as ?? target.name, target)
     return target
   }
 
