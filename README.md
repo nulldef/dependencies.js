@@ -109,13 +109,13 @@ c.reset() // clears all registrations and cached instances
 
 #### Methods
 
-| Method                       | Description                                                                 |
-| ---------------------------- | --------------------------------------------------------------------------- |
-| `get<T>(token)`              | Resolves and returns a singleton for the token (class or registered name) |
-| `register(as, target)`       | Registers `target` under the string token `as`                              |
-| `replace(as, target)`       | Replaces the implementation for an existing token `as`                      |
-| `setInstance(token, inst)`   | Stores a pre-built instance for that token (skips constructor on `get`)    |
-| `reset()`                    | Clears all instances and registrations                                      |
+| Method                     | Description                                                               |
+| -------------------------- | ------------------------------------------------------------------------- |
+| `get<T>(token)`            | Resolves and returns a singleton for the token (class or registered name) |
+| `register(as, target)`     | Registers `target` under the string token `as`                            |
+| `replace(as, target)`      | Replaces the implementation for an existing token `as`                    |
+| `setInstance(token, inst)` | Stores a pre-built instance for that token (skips constructor on `get`)   |
+| `reset()`                  | Clears all instances and registrations                                    |
 
 `replace` throws if the token was never registered. After `replace`, `get` uses the new constructor; cached instances are keyed by constructor, so replacing yields a new singleton for the new type.
 
