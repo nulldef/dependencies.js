@@ -36,5 +36,5 @@ jobs:
         continue-on-error: true
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: coverage/lcov.info
-          fail_ci_if_error: false
+          files: coverage/lcov.info,junit.xml
+          fail_ci_if_error: true

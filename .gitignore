@@ -3,3 +3,4 @@ coverage/
 *.js
 *.map
 *.d.ts
+*.xml
