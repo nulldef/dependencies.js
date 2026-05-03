@@ -86,3 +86,17 @@ export const Inject = (...deps: Token[]) => {
     return target
   }
 }
+
+export const InjectProp =
+  (type: Token) =>
+  <T>(target: T, name: string) => {
+    Object.defineProperty(target, name, {
+      get() {
+        return container.get(type)
+      },
+      set() {
+        throw new Error(`Cannot set injected property "${name}"`)
+      },
+      configurable: false,
+    })
+  }

@@ -1,8 +1,0 @@
-{
-  "extends": "./tsconfig.base.json",
-  "compilerOptions": {
-    "types": ["jest", "node"],
-    "ignoreDeprecations": "6.0"
-  },
-  "include": ["**/*.test.ts", "jest.config.ts"]
-}

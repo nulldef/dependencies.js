@@ -1,6 +1,8 @@
 import "reflect-metadata"
 
-import { Container, Inject, Injectable, container } from "./index"
+import { beforeEach, describe, expect, it } from "bun:test"
+
+import { Container, Inject, InjectProp, Injectable, container } from "./index"
 
 const DEPS_KEY = Symbol.for("di:dependencies")
 
@@ -59,11 +61,11 @@ describe("Container", () => {
     c.register("Impl", First)
     const first = c.get("Impl")
     c.replace("Impl", Second)
-    const afterReplace = c.get("Impl")
+    const afterReplace = c.get<Second>("Impl")
     expect(first).toBeInstanceOf(First)
     expect(afterReplace).toBeInstanceOf(Second)
     expect(afterReplace).not.toBe(first)
-    expect(c.get("Impl")).toBe(afterReplace)
+    expect(c.get<Second>("Impl")).toBe(afterReplace)
   })
 
   it("setInstance supplies a pre-built instance for get without calling the constructor", () => {
@@ -85,8 +87,8 @@ describe("Container", () => {
     c.register("Api", Api)
     const stub = {} as Api
     c.setInstance("Api", stub)
-    expect(c.get("Api")).toBe(stub)
-    expect(c.get(Api)).toBe(stub)
+    expect(c.get<Api>("Api")).toBe(stub)
+    expect(c.get<Api>(Api)).toBe(stub)
   })
 
   it("setInstance throws when the token is not registered", () => {
@@ -140,8 +142,8 @@ describe("Container", () => {
   it("resolves by string token when no dependencies", () => {
     class Foo {}
     c.register("Foo", Foo)
-    expect(c.get("Foo")).toBeInstanceOf(Foo)
-    expect(c.get("Foo")).toBe(c.get(Foo))
+    expect(c.get<Foo>("Foo")).toBeInstanceOf(Foo)
+    expect(c.get<Foo>("Foo")).toBe(c.get(Foo))
   })
 
   it("resolves by string token when class has @Inject metadata", () => {
@@ -155,7 +157,7 @@ describe("Container", () => {
     c.register("Logger", Logger)
     c.register("Service", Service)
 
-    const byName = c.get("Service")
+    const byName = c.get<Service>("Service")
     expect(byName).toBeInstanceOf(Service)
     expect(byName.logger).toBeInstanceOf(Logger)
   })
@@ -258,7 +260,7 @@ describe("Container.setInstance with @Injectable", () => {
 
     const stub = {} as Logger
     container.setInstance("AppLogger", stub)
-    expect(container.get("AppLogger")).toBe(stub)
+    expect(container.get<Logger>("AppLogger")).toBe(stub)
   })
 })
 
@@ -286,9 +288,9 @@ describe("Container.replace with @Inject", () => {
 
     container.replace("LoggerV1", LoggerV2)
 
-    const service = container.get(Service)
+    const service = container.get<Service>(Service)
     expect(service.logger).toBeInstanceOf(LoggerV2)
-    expect((service.logger as LoggerV2).tag).toBe("v2")
+    expect(service.logger.tag).toBe("v2")
   })
 })
 
@@ -366,5 +368,74 @@ describe("@Inject decorator", () => {
 
     const db = container.get(Database)
     expect(db.config).toBeInstanceOf(Config)
+  })
+})
+
+describe("@InjectProp decorator", () => {
+  beforeEach(() => {
+    container.reset()
+  })
+
+  it("sets dependency metadata and resolves them", () => {
+    @Injectable()
+    class Database {}
+
+    @Injectable()
+    class UserRepo {
+      @InjectProp(Database)
+      public db!: Database
+    }
+
+    const repo = container.get(UserRepo)
+    expect(repo).toBeInstanceOf(UserRepo)
+    expect(repo.db).toBeInstanceOf(Database)
+  })
+
+  it("resolves a deep dependency chain", () => {
+    @Injectable()
+    class Config {}
+
+    @Injectable()
+    @Inject(Config)
+    class Database {
+      constructor(public config: Config) {}
+    }
+
+    @Injectable()
+    class UserRepo {
+      @InjectProp(Database)
+      public db!: Database
+    }
+
+    const repo = container.get(UserRepo)
+    expect(repo.db.config).toBeInstanceOf(Config)
+  })
+
+  it("resolves a dependency registered with a custom @Injectable token", () => {
+    @Injectable("AppConfig")
+    class Config {}
+
+    @Injectable()
+    class Database {
+      @InjectProp("AppConfig")
+      public config!: Config
+    }
+
+    const db = container.get(Database)
+    expect(db.config).toBeInstanceOf(Config)
+  })
+
+  it("throws an error when setter is used", () => {
+    @Injectable("AppConfig")
+    class Config {}
+
+    @Injectable()
+    class Database {
+      @InjectProp("AppConfig")
+      public config!: Config
+    }
+
+    const db = container.get<Database>(Database)
+    expect(() => (db.config = new Config())).toThrow(/Cannot set injected property/)
   })
 })

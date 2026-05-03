@@ -61,7 +61,7 @@ class MyService {}
 class Config {}
 ```
 
-### `@Inject(...deps)`
+### `@Inject(...tokens)`
 
 Declares constructor dependencies. Each entry is a class constructor or a string token that must be registered on the same container.
 
@@ -82,6 +82,30 @@ class Config {}
 @Inject("AppConfig")
 class Database {
   constructor(public config: Config) {}
+}
+```
+
+### `@InjectProp(token)`
+
+Declares a property dependency.
+
+```typescript
+@Injectable()
+class UserRepo {
+  @InjectProp(Database)
+  public db: Database
+
+  @InjectProp(Logger)
+  public logger: Logger
+}
+
+@Injectable("AppConfig")
+class Config {}
+
+@Injectable()
+class Database {
+  @InjectProp("AppConfig")
+  public config: Config
 }
 ```
 
